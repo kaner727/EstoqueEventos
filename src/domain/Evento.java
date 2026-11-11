@@ -3,11 +3,11 @@ package domain;
 import java.util.ArrayList;
 
 public class Evento {
-        private int id;
+        private final int id;
         private String nomeCliente;
         private long dataInicio;
         private long dataFim;
-        private ArrayList<ItemEstoque> itensAlugados;
+        private ArrayList<ItemAlugado> itensAlugados = new ArrayList<>();
 
         Evento(int id, String nomeCliente, long dataInicio, long dataFim) {
                 this.id = id;
@@ -16,27 +16,45 @@ public class Evento {
                 this.dataFim = dataFim;
         }
 
-        public boolean alugarItem(ItemEstoque item, int qtd) {
+        public boolean alugarItem(ItemEstrutura item, int qtd) {
                 if(item.debitarEstoque(qtd)) {
-                        for(int i = 0; i < qtd; i++) this.itensAlugados.add(item);
-                        return false;
+                        ItemAlugado novoAlugado = new ItemAlugado(item, qtd);
+                        this.itensAlugados.add(novoAlugado);
+                        return true;
                 }
-                return true; // sem estoque
+                return false; // sem estoque
         }
 
-        public void recuperarItem(ItemEstoque item, int qtd) {
-                int qtd_removidos = 0;
-                for(int i = 0; i < qtd; i++) {
-                        // se o item foi removido, adiciona ao contador para ser creditado depois
-                        if(this.itensAlugados.remove(item)) qtd_removidos++;
+        public boolean recuperarItem(ItemEstrutura item, int qtd) {
+                ItemAlugado itemDevolver = null;
+
+                for(ItemAlugado itemA : this.itensAlugados) {
+                        if(itemA.getItem().getId() == item.getId()) {
+                                itemDevolver = itemA;
+                        }
                 }
-                item.creditarEstoque(qtd_removidos);
+
+                if(itemDevolver != null) {
+                        int qtdReal = Math.min(qtd, itemDevolver.getQuantidade());
+
+                        // adiciona ao estoque, remove a quantidade do item que foi alugado (itemAlugado)
+                        item.creditarEstoque(qtdReal);
+                        itemDevolver.diminuirQuantidade(qtdReal);
+
+                        // se nao tem mais itens alugados, remove da lista
+                        if(itemDevolver.getQuantidade() == 0) {
+                                itensAlugados.remove(itemDevolver);
+                        }
+
+                        return true; // sucesso
+                }
+                return false; // esse item nao estava alugado nesse evento
         }
 
         public double calcularCustoTotal() {
                 double total = 0.0;
-                for(ItemEstoque item : itensAlugados) {
-                        // total += item.calcularValorLocacao((this.dataFim - this.dataInicio), );
+                for(ItemAlugado item : itensAlugados) {
+                        total += item.calcularSubTotal((this.dataFim - this.dataInicio));
                 }
                 return total;
         }
