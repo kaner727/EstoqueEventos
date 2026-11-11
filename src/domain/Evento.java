@@ -58,4 +58,10 @@ public class Evento {
                 }
                 return total;
         }
+
+        // getters e setters
+        public int getId() { return this.id; }
+        public String getNomeCliente() { return this.nomeCliente; }
+        public long getDataInicio() { return this.dataInicio; }
+        public long getDataFim() { return this.dataFim; }
 }
