@@ -1,7 +1,7 @@
 package domain;
 
 public class ItemAlugado {
-    private ItemEstrutura item;
+    private final ItemEstrutura item;
     private int quantidade;
 
     public ItemAlugado(ItemEstrutura item, int quantidade) {

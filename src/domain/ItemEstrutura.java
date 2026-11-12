@@ -6,13 +6,15 @@ public abstract class ItemEstrutura {
     private int quantidadeTotal;
     private int quantidadeDisponivel;
     private double valorDiaria;
+    private double taxaMontagem;
 
-    protected ItemEstrutura(int id, String descricao, int quantidadeTotal, double valorDiaria) {
+    protected ItemEstrutura(int id, String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem) {
         this.id = id;
         this.descricao = descricao;
         this.quantidadeTotal = quantidadeTotal;
         this.quantidadeDisponivel = quantidadeTotal;
         this.valorDiaria = valorDiaria;
+        this.taxaMontagem = taxaMontagem;
     }
 
     // Metodos base
@@ -50,6 +52,7 @@ public abstract class ItemEstrutura {
     public int    getQuantidadeTotal() { return this.quantidadeTotal; }
     public int    getQuantidadeDisponivel() { return this.quantidadeDisponivel; }
     public double getValorDiaria() { return this.valorDiaria; }
+    public double getTaxaMontagem() { return this.taxaMontagem; }
 
     public void setValorDiaria(double vlr) {
         if(vlr >= 0.0) {
@@ -59,4 +62,5 @@ public abstract class ItemEstrutura {
         }
     }
     public void setDescricao(String novaDesc) { this.descricao = novaDesc; }
+    public void setTaxaMontagem(double taxaMontagem) { this.taxaMontagem = taxaMontagem; }
 }
