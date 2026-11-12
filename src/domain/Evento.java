@@ -1,13 +1,14 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Evento {
         private final int id;
         private String nomeCliente;
         private long dataInicio;
         private long dataFim;
-        private ArrayList<ItemAlugado> itensAlugados = new ArrayList<>();
+        private List<ItemAlugado> itensAlugados = new ArrayList<>();
 
         Evento(int id, String nomeCliente, long dataInicio, long dataFim) {
                 this.id = id;
@@ -57,6 +58,10 @@ public class Evento {
                         total += item.calcularSubTotal((this.dataFim - this.dataInicio));
                 }
                 return total;
+        }
+
+        public double duracaoDoEvento() {
+                return getDataFim() - getDataInicio();
         }
 
         // getters e setters
