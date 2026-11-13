@@ -1,5 +1,6 @@
 package domain;
 
+import application.GeradorID;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class Evento {
         private long dataFim;
         private List<ItemAlugado> itensAlugados = new ArrayList<>();
 
-        Evento(int id, String nomeCliente, long dataInicio, long dataFim) {
-                this.id = id;
+        Evento(String nomeCliente, long dataInicio, long dataFim) {
+                this.id = GeradorID.gerarIDEvento();
                 this.nomeCliente = nomeCliente;
                 this.dataInicio = dataInicio;
                 this.dataFim = dataFim;
