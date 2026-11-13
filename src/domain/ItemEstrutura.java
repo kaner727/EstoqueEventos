@@ -1,5 +1,7 @@
 package domain;
 
+import application.GeradorID;
+
 public abstract class ItemEstrutura {
     private final int id;
     private String descricao;
@@ -8,8 +10,8 @@ public abstract class ItemEstrutura {
     private double valorDiaria;
     private double taxaMontagem;
 
-    protected ItemEstrutura(int id, String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem) {
-        this.id = id;
+    protected ItemEstrutura(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem) {
+        this.id = GeradorID.gerarIDItem();
         this.descricao = descricao;
         this.quantidadeTotal = quantidadeTotal;
         this.quantidadeDisponivel = quantidadeTotal;
