@@ -1,6 +1,8 @@
 package domain;
 
-public class ItemAlugado {
+import java.io.Serializable;
+
+public class ItemAlugado implements Serializable {
     private final ItemEstrutura item;
     private int quantidade;
 

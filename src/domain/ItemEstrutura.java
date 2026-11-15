@@ -1,8 +1,9 @@
 package domain;
 
 import application.GeradorID;
+import java.io.Serializable;
 
-public abstract class ItemEstrutura {
+public abstract class ItemEstrutura implements Serializable {
     private final int id;
     private String descricao;
     private int quantidadeTotal;

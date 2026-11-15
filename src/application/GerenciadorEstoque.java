@@ -13,9 +13,24 @@ public class GerenciadorEstoque {
 
     public GerenciadorEstoque(RepositorioDados repositorio) {
         this.repositorio = repositorio;
-
         this.estoqueGlobal = repositorio.carregarEstoque();
         this.eventos = repositorio.carregarEventos();
+
+        int maxIdItem = 0;
+        for(ItemEstrutura item : this.estoqueGlobal) {
+            if(item.getId() > maxIdItem) {
+                maxIdItem = item.getId();
+            }
+        }
+        GeradorID.setUltimoIDItem(maxIdItem);
+
+        int maxIdEvento = 0;
+        for(Evento evento : this.eventos) {
+            if(evento.getId() > maxIdEvento) {
+                maxIdEvento = evento.getId();
+            }
+        }
+        GeradorID.setUltimoIDEvento(maxIdEvento);
 
         // caso for a primeira vez abrindo o app
         if(this.estoqueGlobal == null) this.estoqueGlobal = new ArrayList<>();

@@ -1,15 +1,17 @@
 package domain;
 
 import application.GeradorID;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Evento {
+public class Evento implements Serializable {
         private final int id;
         private String nomeCliente;
         private long dataInicio;
         private long dataFim;
         private List<ItemAlugado> itensAlugados = new ArrayList<>();
+
 
         Evento(String nomeCliente, long dataInicio, long dataFim) {
                 this.id = GeradorID.gerarIDEvento();
