@@ -3,8 +3,8 @@ package domain;
 public class Tenda extends ItemEstrutura {
     private final double aream2;
 
-    public Tenda(int id, String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double aream2) {
-        super(id, descricao, quantidadeTotal, valorDiaria, taxaMontagem);
+    public Tenda(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double aream2) {
+        super(descricao, quantidadeTotal, valorDiaria, taxaMontagem);
         this.aream2 = aream2;
     }
 
