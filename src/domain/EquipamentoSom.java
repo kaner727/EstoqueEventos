@@ -4,7 +4,7 @@ public class EquipamentoSom extends ItemEstrutura {
     private final int potenciaW;
 
     public EquipamentoSom(int id, String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, int potenciaW) {
-        super(id, descricao, quantidadeTotal, valorDiaria, taxaMontagem);
+        super(descricao, quantidadeTotal, valorDiaria, taxaMontagem);
         this.potenciaW = potenciaW;
     }
 

@@ -4,8 +4,8 @@ public class EstruturaAluminio extends ItemEstrutura {
     private final double tamanhoM;
     private final String tipoTruss;
 
-    public EstruturaAluminio(int id, String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double tamanhoM, String tipoTruss) {
-        super(id, descricao, quantidadeTotal, valorDiaria, taxaMontagem);
+    public EstruturaAluminio(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double tamanhoM, String tipoTruss) {
+        super(descricao, quantidadeTotal, valorDiaria, taxaMontagem);
         this.tamanhoM = tamanhoM;
         this.tipoTruss = tipoTruss;
     }
