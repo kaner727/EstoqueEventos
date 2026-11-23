@@ -1,7 +1,7 @@
-package presentation;
+package locacao.presentation;
 
-import application.GerenciadorEstoque;
-import presentation.textual.FabricaTextualUI;
+import locacao.application.GerenciadorEstoque;
+import locacao.presentation.textual.FabricaTextualUI;
 
 public abstract class FabricaUI {
     public enum TipoInterface {

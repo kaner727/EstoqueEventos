@@ -1,4 +1,4 @@
-package domain;
+package locacao.domain;
 
 import java.io.Serializable;
 

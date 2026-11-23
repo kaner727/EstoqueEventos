@@ -1,4 +1,4 @@
-package application;
+package locacao.domain;
 
 public class GeradorID {
     private GeradorID() {}

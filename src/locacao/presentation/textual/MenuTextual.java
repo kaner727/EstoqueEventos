@@ -1,10 +1,8 @@
-package presentation.textual;
+package locacao.presentation.textual;
 
-import application.GerenciadorEstoque;
-import presentation.FabricaUI;
-import presentation.MenuPrincipal;
-
-import java.util.Scanner;
+import locacao.application.GerenciadorEstoque;
+import locacao.presentation.FabricaUI;
+import locacao.presentation.MenuPrincipal;
 
 public class MenuTextual extends TelaTextualBase implements MenuPrincipal {
     private final FabricaUI fabrica;

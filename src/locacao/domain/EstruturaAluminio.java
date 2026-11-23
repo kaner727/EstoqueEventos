@@ -1,4 +1,4 @@
-package domain;
+package locacao.domain;
 
 public class EstruturaAluminio extends ItemEstrutura {
     private static final long serialVersionUID = 1L;

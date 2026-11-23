@@ -1,9 +1,9 @@
-package presentation.textual;
+package locacao.presentation.textual;
 
-import application.GerenciadorEstoque;
-import domain.Evento;
-import domain.ItemEstrutura;
-import presentation.TelaEventos;
+import locacao.application.GerenciadorEstoque;
+import locacao.domain.Evento;
+import locacao.domain.ItemEstrutura;
+import locacao.presentation.TelaEventos;
 
 import java.util.List;
 
@@ -53,7 +53,12 @@ public class TelaEventosTextual extends TelaTextualBase implements TelaEventos {
 
     private void cadastrarEvento() {
         System.out.print("\nNome do Cliente / Evento: ");
-        String nomeCliente = scanner.nextLine();
+        String nomeCliente = scanner.nextLine().trim();
+
+        if (nomeCliente.isBlank()) {
+            System.out.println("Informe o nome do cliente. Cadastro cancelado.");
+            return;
+        }
 
         System.out.print("Data de Início (DD/MM/AAAA): ");
         long dataInicio = lerData();

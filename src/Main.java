@@ -1,8 +1,8 @@
-import application.GerenciadorEstoque;
-import application.RepositorioDados;
-import infraestructure.RepositorioArquivos;
-import presentation.FabricaUI;
-import presentation.MenuPrincipal;
+import locacao.application.GerenciadorEstoque;
+import locacao.application.RepositorioDados;
+import locacao.infrastructure.RepositorioArquivos;
+import locacao.presentation.FabricaUI;
+import locacao.presentation.MenuPrincipal;
 
 public class Main {
     public static void main(String[] args) {

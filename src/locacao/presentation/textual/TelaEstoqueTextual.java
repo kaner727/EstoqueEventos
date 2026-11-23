@@ -1,11 +1,11 @@
-package presentation.textual;
+package locacao.presentation.textual;
 
-import application.GerenciadorEstoque;
-import domain.EquipamentoSom;
-import domain.EstruturaAluminio;
-import domain.ItemEstrutura;
-import domain.Tenda;
-import presentation.TelaEstoque;
+import locacao.application.GerenciadorEstoque;
+import locacao.domain.EquipamentoSom;
+import locacao.domain.EstruturaAluminio;
+import locacao.domain.ItemEstrutura;
+import locacao.domain.Tenda;
+import locacao.presentation.TelaEstoque;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
         double valorDiaria = lerDouble();
 
         System.out.print("Quantidade total disponível: ");
-        int quantidade = lerInteiro();
+        int quantidade = lerQuantidadeEstoque();
 
         System.out.print("Taxa de montagem (R$): ");
         double taxaMontagem = lerDouble();
@@ -118,7 +118,7 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
         double novoValorDiaria = lerDouble();
 
         System.out.print("Nova quantidade total (atual: " + itemAtual.getQuantidadeTotal() + "): ");
-        int novaQuantidadeTotal = lerInteiro();
+        int novaQuantidadeTotal = lerQuantidadeEstoque();
 
         System.out.print("Nova taxa de montagem (R$): ");
         double novaTaxaMontagem = lerDouble();

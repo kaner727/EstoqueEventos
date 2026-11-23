@@ -1,10 +1,11 @@
-package presentation.textual;
+package locacao.presentation.textual;
 
-import application.GerenciadorEstoque;
+import locacao.application.GerenciadorEstoque;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Scanner;
 
 public abstract class TelaTextualBase {
@@ -23,13 +24,34 @@ public abstract class TelaTextualBase {
         }
     }
 
-    protected double lerDouble() {
-        try {
-            return Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
-        } catch (NumberFormatException e) {
-            return 0.0;
+    protected int lerQuantidadeEstoque() {
+        while (true) {
+            int quantidade = lerInteiro();
+
+            if (quantidade >= 0) {
+                return quantidade;
+            }
+
+            System.out.print("Digite uma quantidade inteira igual ou maior que zero: ");
         }
     }
+
+    protected double lerDouble() {
+        while (true) {
+            String entrada = scanner.nextLine().trim().replace(',', '.');
+
+            try {
+                double valor = Double.parseDouble(entrada);
+                if (Double.isFinite(valor) && valor >= 0) {
+                    return valor;
+                }
+            } catch (NumberFormatException e) {
+            }
+
+            System.out.print("Digite um número válido igual ou maior que zero: ");
+        }
+    }
+
 
     protected long lerLong() {
         try {
@@ -40,7 +62,7 @@ public abstract class TelaTextualBase {
     }
 
     protected long lerData() {
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
         while (true) {
             String entrada = scanner.nextLine().trim();
             try {

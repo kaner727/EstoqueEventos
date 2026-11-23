@@ -1,6 +1,5 @@
-package domain;
+package locacao.domain;
 
-import application.GeradorID;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -65,9 +64,11 @@ public class Evento implements Serializable {
         }
 
         public double calcularCustoTotal() {
+                long diasCobrados = Math.max(1L, this.dataFim - this.dataInicio);
+
                 double total = 0.0;
-                for(ItemAlugado item : itensAlugados) {
-                        total += item.calcularSubTotal((this.dataFim - this.dataInicio));
+                for (ItemAlugado item : itensAlugados) {
+                        total += item.calcularSubTotal(diasCobrados);
                 }
                 return total;
         }

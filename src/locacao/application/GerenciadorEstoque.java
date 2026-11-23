@@ -1,7 +1,8 @@
-package application;
+package locacao.application;
 
-import domain.Evento;
-import domain.ItemEstrutura;
+import locacao.domain.Evento;
+import locacao.domain.GeradorID;
+import locacao.domain.ItemEstrutura;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,8 +15,9 @@ public class GerenciadorEstoque {
 
     public GerenciadorEstoque(RepositorioDados repositorio) {
         this.repositorio = repositorio;
-        this.estoqueGlobal = repositorio.carregarEstoque();
-        this.eventos = repositorio.carregarEventos();
+        DadosLocacao dados = repositorio.carregar();
+        this.estoqueGlobal = dados.estoque();
+        this.eventos = dados.eventos();
 
         // Garante listas válidas ANTES de percorrer no for
         if (this.estoqueGlobal == null) this.estoqueGlobal = new ArrayList<>();
@@ -40,12 +42,12 @@ public class GerenciadorEstoque {
 
     public void cadastrarNovoItem(ItemEstrutura item) {
         this.estoqueGlobal.add(item);
-        this.repositorio.salvarEstoque(this.estoqueGlobal); // salva estado
+        salvarDados();
     }
 
     public void cadastrarEvento(Evento evento) {
         this.eventos.add(evento);
-        this.repositorio.salvarEventos(this.eventos);
+        salvarDados();
     }
 
     public List<ItemEstrutura> listarEstoque() {
@@ -59,28 +61,21 @@ public class GerenciadorEstoque {
 
     public boolean atualizarItem(int id, String novaDescricao, int novaQuantidadeTotal, double novoValorDiaria, double novaTaxaMontagem) {
         ItemEstrutura item = buscarItemPorId(id);
-        if (item == null || novoValorDiaria < 0 || novaTaxaMontagem < 0) {
+        if (item == null
+                || !Double.isFinite(novoValorDiaria) || novoValorDiaria < 0
+                || !Double.isFinite(novaTaxaMontagem) || novaTaxaMontagem < 0) {
             return false;
         }
 
-        // Impede reduzir o total para menos do que já está alugado em eventos
-        int qtdAlugada = item.getQuantidadeTotal() - item.getQuantidadeDisponivel();
-        if (novaQuantidadeTotal < qtdAlugada) {
+        if(!item.alterarQuantidadeTotal(novaQuantidadeTotal)) {
             return false;
-        }
-
-        int diferenca = novaQuantidadeTotal - item.getQuantidadeTotal();
-        if (diferenca > 0) {
-            item.aumentarQtdTotal(diferenca);
-        } else if (diferenca < 0) {
-            item.diminuirQtdTotal(Math.abs(diferenca));
         }
 
         item.setDescricao(novaDescricao);
         item.setValorDiaria(novoValorDiaria);
         item.setTaxaMontagem(novaTaxaMontagem);
 
-        this.repositorio.salvarEstoque(this.estoqueGlobal);
+        salvarDados();
         return true;
     }
 
@@ -94,7 +89,7 @@ public class GerenciadorEstoque {
         evento.setDataInicio(novaDataInicio);
         evento.setDataFim(novaDataFim);
 
-        this.repositorio.salvarEventos(this.eventos);
+        salvarDados();
         return true;
     }
 
@@ -104,8 +99,7 @@ public class GerenciadorEstoque {
 
         if (evento != null && item != null && qtd > 0) {
             if (evento.recuperarItem(item, qtd)) {
-                this.repositorio.salvarEventos(this.eventos);
-                this.repositorio.salvarEstoque(this.estoqueGlobal);
+                salvarDados();
                 return true;
             }
         }
@@ -120,12 +114,15 @@ public class GerenciadorEstoque {
             boolean ok = evento.alugarItem(item, qtd);
 
             if (ok) {
-                this.repositorio.salvarEventos(this.eventos);
-                this.repositorio.salvarEstoque(this.estoqueGlobal);
+                salvarDados();
                 return true; // alugou itens corretamente
             }
         }
         return false; // nao encontrou o evento ou item
+    }
+
+    private void salvarDados() {
+        repositorio.salvar(new DadosLocacao(estoqueGlobal, eventos));
     }
 
 

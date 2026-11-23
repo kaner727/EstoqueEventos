@@ -1,7 +1,7 @@
-package presentation.textual;
+package locacao.presentation.textual;
 
-import application.GerenciadorEstoque;
-import presentation.*;
+import locacao.application.GerenciadorEstoque;
+import locacao.presentation.*;
 
 public class FabricaTextualUI extends FabricaUI {
     @Override

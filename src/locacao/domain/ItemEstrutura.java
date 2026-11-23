@@ -1,6 +1,5 @@
-package domain;
+package locacao.domain;
 
-import application.GeradorID;
 import java.io.Serializable;
 
 public abstract class ItemEstrutura implements Serializable {
@@ -12,7 +11,20 @@ public abstract class ItemEstrutura implements Serializable {
     private double valorDiaria;
     private double taxaMontagem;
 
-    protected ItemEstrutura(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem) {
+    protected ItemEstrutura(String descricao, int quantidadeTotal,
+                            double valorDiaria, double taxaMontagem) {
+        if (quantidadeTotal < 0) {
+            throw new IllegalArgumentException("A quantidade total não pode ser negativa.");
+        }
+
+        if (!Double.isFinite(valorDiaria) || valorDiaria < 0) {
+            throw new IllegalArgumentException("Informe uma diária válida e não negativa.");
+        }
+
+        if (!Double.isFinite(taxaMontagem) || taxaMontagem < 0) {
+            throw new IllegalArgumentException("Informe uma taxa de montagem válida e não negativa.");
+        }
+
         this.id = GeradorID.gerarIDItem();
         this.descricao = descricao;
         this.quantidadeTotal = quantidadeTotal;
@@ -40,14 +52,16 @@ public abstract class ItemEstrutura implements Serializable {
         }
     }
 
-    public void aumentarQtdTotal(int qtd) {
-        this.quantidadeTotal += qtd;
-        this.quantidadeDisponivel += qtd;
-    }
+    public boolean alterarQuantidadeTotal(int novoTotal) {
+        int quantidadeAlugada = this.quantidadeTotal - this.quantidadeDisponivel;
 
-    public void diminuirQtdTotal(int qtd) {
-        this.quantidadeTotal = Math.max(this.quantidadeTotal - qtd, 0);
-        if(this.quantidadeTotal < this.quantidadeDisponivel) quantidadeDisponivel = this.quantidadeTotal;
+        if (novoTotal < quantidadeAlugada) {
+            return false;
+        }
+
+        this.quantidadeTotal = novoTotal;
+        this.quantidadeDisponivel = novoTotal - quantidadeAlugada;
+        return true;
     }
 
     // Getters e Setters
