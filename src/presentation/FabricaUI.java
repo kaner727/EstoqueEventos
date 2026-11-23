@@ -1,6 +1,7 @@
 package presentation;
 
 import application.GerenciadorEstoque;
+import presentation.textual.FabricaTextualUI;
 
 public abstract class FabricaUI {
     public enum TipoInterface {
@@ -11,7 +12,8 @@ public abstract class FabricaUI {
 
     public static FabricaUI getFabrica() {
         if(modoAtual == TipoInterface.GRAFICA) return new FabricaTextualUI();
-        return new FabricaGraficaUI();
+        // return new FabricaGraficaUI();
+        return new FabricaTextualUI();
     }
 
     public abstract MenuPrincipal criarMenuPrincipal(GerenciadorEstoque gerenciador);

@@ -2,17 +2,16 @@ package presentation.textual;
 
 import application.GerenciadorEstoque;
 import presentation.FabricaUI;
+import presentation.MenuPrincipal;
+
 import java.util.Scanner;
 
-public class MenuTextual implements MenuPrincipal {
-    private final GerenciadorEstoque gerenciador;
+public class MenuTextual extends TelaTextualBase implements MenuPrincipal {
     private final FabricaUI fabrica;
-    private final Scanner scanner;
 
     public MenuTextual(GerenciadorEstoque gerenciador, FabricaUI fabrica) {
-        this.gerenciador = gerenciador;
+        super(gerenciador);
         this.fabrica = fabrica;
-        this.scanner = new Scanner(System.in);
     }
 
     @Override
@@ -22,10 +21,10 @@ public class MenuTextual implements MenuPrincipal {
             System.out.println("\n-----------------------------------------------------");
             System.out.println("EstoqueEventos - Gerenciamento de Materiais e Eventos");
             System.out.println("-----------------------------------------------------");
-            System.out.println("1: Gerenciar Estoque de Estruturas");
-            System.out.println("2: Gerenciar Eventos e Alocações");
-            System.out.println("0: Sair");
-            System.out.println("::: ");
+            System.out.println("1. Gerenciar Estoque de Estruturas");
+            System.out.println("2. Gerenciar Eventos e Alocações");
+            System.out.println("0. Sair");
+            System.out.print("::: ");
 
             opc = lerInteiro();
 
@@ -42,14 +41,6 @@ public class MenuTextual implements MenuPrincipal {
                 default:
                     System.out.println("Opcão inválida!");
             }
-        }
-    }
-
-    private int lerInteiro() {
-        try {
-            return Integer.parseInt(scanner.nextLine().trim());
-        } catch (NumberFormatException e) {
-            return -1;
         }
     }
 }

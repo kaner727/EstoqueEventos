@@ -1,6 +1,7 @@
 package domain;
 
 public class EstruturaAluminio extends ItemEstrutura {
+    private static final long serialVersionUID = 1L;
     private final double tamanhoM;
     private final String tipoTruss;
 
@@ -25,5 +26,10 @@ public class EstruturaAluminio extends ItemEstrutura {
 
     public double getTamanhoM() { return this.tamanhoM; }
     public String getTipoTruss() { return this.tipoTruss; }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" | Comp.: %.2f m | Tipo: %s", this.tamanhoM, this.tipoTruss);
+    }
 }
 

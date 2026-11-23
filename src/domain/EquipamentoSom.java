@@ -1,9 +1,10 @@
 package domain;
 
 public class EquipamentoSom extends ItemEstrutura {
+    private static final long serialVersionUID = 1L;
     private final int potenciaW;
 
-    public EquipamentoSom(int id, String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, int potenciaW) {
+    public EquipamentoSom(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, int potenciaW) {
         super(descricao, quantidadeTotal, valorDiaria, taxaMontagem);
         this.potenciaW = potenciaW;
     }
@@ -23,5 +24,10 @@ public class EquipamentoSom extends ItemEstrutura {
 
         // adiciona uma pequena taxa pela potencia do tipo alugado (so uma funcionalidade para deixar unico, nao faz muito sentido de negocio)
         return (diariaDescontada * dias * quantidade) + (getPotenciaW() / 30.0) + getTaxaMontagem();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" | Potência: %d W", this.potenciaW);
     }
 }

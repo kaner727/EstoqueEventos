@@ -4,6 +4,7 @@ import application.GeradorID;
 import java.io.Serializable;
 
 public abstract class ItemEstrutura implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int id;
     private String descricao;
     private int quantidadeTotal;
@@ -66,4 +67,11 @@ public abstract class ItemEstrutura implements Serializable {
     }
     public void setDescricao(String novaDesc) { this.descricao = novaDesc; }
     public void setTaxaMontagem(double taxaMontagem) { this.taxaMontagem = taxaMontagem; }
+
+    @Override
+    public String toString() {
+        return String.format("[ID: %d] %s | Diária: R$ %.2f | Montagem: R$ %.2f | Disp: %d/%d",
+                this.id, this.descricao, this.valorDiaria, this.taxaMontagem,
+                this.quantidadeDisponivel, this.quantidadeTotal);
+    }
 }

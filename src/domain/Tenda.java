@@ -1,6 +1,7 @@
 package domain;
 
 public class Tenda extends ItemEstrutura {
+    private static final long serialVersionUID = 1L;
     private final double aream2;
 
     public Tenda(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double aream2) {
@@ -16,4 +17,9 @@ public class Tenda extends ItemEstrutura {
     }
 
     public double getAream2() { return this.aream2; }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" | Área: %.1f m²", this.aream2);
+    }
 }
