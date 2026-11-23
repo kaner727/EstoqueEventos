@@ -1,4 +1,6 @@
-package locacao.domain;
+package locacao.domain.model;
+
+import locacao.domain.GeradorID;
 
 import java.io.Serializable;
 import java.time.LocalDate;

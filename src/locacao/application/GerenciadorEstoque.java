@@ -1,8 +1,8 @@
 package locacao.application;
 
-import locacao.domain.Evento;
+import locacao.domain.model.Evento;
 import locacao.domain.GeradorID;
-import locacao.domain.ItemEstrutura;
+import locacao.domain.model.ItemEstrutura;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

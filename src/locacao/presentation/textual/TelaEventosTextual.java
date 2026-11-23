@@ -1,8 +1,8 @@
 package locacao.presentation.textual;
 
 import locacao.application.GerenciadorEstoque;
-import locacao.domain.Evento;
-import locacao.domain.ItemEstrutura;
+import locacao.domain.model.Evento;
+import locacao.domain.model.ItemEstrutura;
 import locacao.presentation.TelaEventos;
 
 import java.util.List;

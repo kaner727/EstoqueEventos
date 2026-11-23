@@ -1,10 +1,10 @@
 package locacao.presentation.textual;
 
 import locacao.application.GerenciadorEstoque;
-import locacao.domain.EquipamentoSom;
-import locacao.domain.EstruturaAluminio;
-import locacao.domain.ItemEstrutura;
-import locacao.domain.Tenda;
+import locacao.domain.model.EquipamentoSom;
+import locacao.domain.model.EstruturaAluminio;
+import locacao.domain.model.ItemEstrutura;
+import locacao.domain.model.Tenda;
 import locacao.presentation.TelaEstoque;
 
 import java.util.List;
