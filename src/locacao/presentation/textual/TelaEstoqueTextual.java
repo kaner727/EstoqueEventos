@@ -23,6 +23,7 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
             System.out.println("1. Cadastrar novo Item");
             System.out.println("2. Listar Estoque Completo");
             System.out.println("3. Editar Item (por ID)");
+            System.out.println("4. Excluir Item (por ID)");
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("::: ");
             opc = lerInteiro();
@@ -36,6 +37,9 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
                     break;
                 case 3:
                     editarItem();
+                    break;
+                case 4:
+                    excluirItem();
                     break;
                 case 0:
                     break;
@@ -127,6 +131,22 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
             System.out.println("Item atualizado e salvo com sucesso!");
         } else {
             System.out.println("Falha ao atualizar: verifique se os valores são válidos ou se a nova quantidade é menor que os itens já alugados.");
+        }
+    }
+
+    private void excluirItem() {
+        listarEstoque();
+        System.out.print("\nID do item para excluir (0 para cancelar): ");
+        int id = lerInteiro();
+
+        if (id == 0) {
+            return;
+        }
+
+        if (gerenciador.excluirItem(id)) {
+            System.out.println("Item excluído com sucesso!");
+        } else {
+            System.out.println("Item não encontrado ou com unidades alugadas.");
         }
     }
 

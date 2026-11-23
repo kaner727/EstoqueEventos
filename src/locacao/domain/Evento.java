@@ -63,6 +63,13 @@ public class Evento implements Serializable {
                 return false; // esse item nao estava alugado nesse evento
         }
 
+        public void devolverTodosOsItens() {
+                for (ItemAlugado locacao : itensAlugados) {
+                        locacao.getItem().creditarEstoque(locacao.getQuantidade());
+                }
+                itensAlugados.clear();
+        }
+
         public double calcularCustoTotal() {
                 long diasCobrados = Math.max(1L, this.dataFim - this.dataInicio);
 

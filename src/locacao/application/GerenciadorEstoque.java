@@ -50,6 +50,33 @@ public class GerenciadorEstoque {
         salvarDados();
     }
 
+    public boolean excluirItem(int id) {
+        ItemEstrutura item = buscarItemPorId(id);
+
+        if (item == null
+                || item.getQuantidadeDisponivel() != item.getQuantidadeTotal()) {
+            return false;
+        }
+
+        estoqueGlobal.remove(item);
+        salvarDados();
+        return true;
+    }
+
+    public boolean excluirEvento(int id) {
+        Evento evento = buscarEventoPorId(id);
+
+        if (evento == null) {
+            return false;
+        }
+
+        evento.devolverTodosOsItens();
+        eventos.remove(evento);
+        salvarDados();
+        return true;
+    }
+
+
     public List<ItemEstrutura> listarEstoque() {
         return Collections.unmodifiableList(this.estoqueGlobal);
     }

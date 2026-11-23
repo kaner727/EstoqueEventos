@@ -23,6 +23,7 @@ public class TelaEventosTextual extends TelaTextualBase implements TelaEventos {
             System.out.println("3. Editar Evento (por ID)");
             System.out.println("4. Alugar Item para Evento");
             System.out.println("5. Devolver Item ao Estoque");
+            System.out.println("6. Excluir Evento (por ID)");
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("::: ");
             opc = lerInteiro();
@@ -42,6 +43,9 @@ public class TelaEventosTextual extends TelaTextualBase implements TelaEventos {
                     break;
                 case 5:
                     devolverItem();
+                    break;
+                case 6:
+                    excluirEvento();
                     break;
                 case 0:
                     break;
@@ -166,6 +170,22 @@ public class TelaEventosTextual extends TelaTextualBase implements TelaEventos {
             System.out.println("Item devolvido ao estoque com sucesso!");
         } else {
             System.out.println("Falha na devolução: verifique os IDs ou se o item está alocado nesse evento.");
+        }
+    }
+
+    private void excluirEvento() {
+        listarEventos();
+        System.out.print("\nID do evento para excluir (0 para cancelar): ");
+        int id = lerInteiro();
+
+        if (id == 0) {
+            return;
+        }
+
+        if (gerenciador.excluirEvento(id)) {
+            System.out.println("Evento excluído. Os itens alugados foram devolvidos ao estoque.");
+        } else {
+            System.out.println("Evento não encontrado.");
         }
     }
 }
