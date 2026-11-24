@@ -1,6 +1,7 @@
 package locacao.presentation;
 
 import locacao.application.GerenciadorEstoque;
+import locacao.presentation.gui.FabricaGraficaUI;
 import locacao.presentation.textual.FabricaTextualUI;
 
 public abstract class FabricaUI {
@@ -8,12 +9,11 @@ public abstract class FabricaUI {
         TEXTUAL, GRAFICA
     }
 
-    private static TipoInterface modoAtual = TipoInterface.TEXTUAL;
+    private static final TipoInterface modoAtual = TipoInterface.TEXTUAL;
 
     public static FabricaUI getFabrica() {
-        if(modoAtual == TipoInterface.GRAFICA) return new FabricaTextualUI();
-        // return new FabricaGraficaUI();
-        return new FabricaTextualUI();
+        if(modoAtual == TipoInterface.TEXTUAL) return new FabricaTextualUI();
+        return new FabricaGraficaUI();
     }
 
     public abstract MenuPrincipal criarMenuPrincipal(GerenciadorEstoque gerenciador);
