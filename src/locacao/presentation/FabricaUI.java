@@ -5,7 +5,7 @@ import locacao.presentation.gui.FabricaGraficaUI;
 import locacao.presentation.textual.FabricaTextualUI;
 
 public abstract class FabricaUI {
-    public enum TipoInterface {
+    private enum TipoInterface {
         TEXTUAL, GRAFICA
     }
 
