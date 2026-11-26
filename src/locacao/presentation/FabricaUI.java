@@ -9,7 +9,7 @@ public abstract class FabricaUI {
         TEXTUAL, GRAFICA
     }
 
-    private static final TipoInterface modoAtual = TipoInterface.TEXTUAL;
+    private static final TipoInterface modoAtual = TipoInterface.GRAFICA;
 
     public static FabricaUI getFabrica() {
         if(modoAtual == TipoInterface.TEXTUAL) return new FabricaTextualUI();

@@ -6,6 +6,9 @@ public class Tenda extends ItemEstrutura {
 
     public Tenda(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double aream2) {
         super(descricao, quantidadeTotal, valorDiaria, taxaMontagem);
+        if (!Double.isFinite(aream2) || aream2 <= 0) {
+            throw new IllegalArgumentException("Informe uma área maior que zero.");
+        }
         this.aream2 = aream2;
     }
 

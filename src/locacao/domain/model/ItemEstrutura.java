@@ -27,6 +27,7 @@ public abstract class ItemEstrutura implements Serializable {
             throw new IllegalArgumentException("Informe uma taxa de montagem válida e não negativa.");
         }
 
+        validarDescricao(descricao);
         this.id = GeradorID.gerarIDItem();
         this.descricao = descricao;
         this.quantidadeTotal = quantidadeTotal;
@@ -81,7 +82,16 @@ public abstract class ItemEstrutura implements Serializable {
             throw new IllegalArgumentException("O valor da diária não pode ser negativo.");
         }
     }
-    public void setDescricao(String novaDesc) { this.descricao = novaDesc; }
+    private static void validarDescricao(String descricao) {
+        if (descricao == null || descricao.isBlank()) {
+            throw new IllegalArgumentException("Informe a descrição do item.");
+        }
+    }
+
+    public void setDescricao(String novaDesc) {
+        validarDescricao(novaDesc);
+        this.descricao = novaDesc;
+    }
     public void setTaxaMontagem(double taxaMontagem) { this.taxaMontagem = taxaMontagem; }
 
     @Override

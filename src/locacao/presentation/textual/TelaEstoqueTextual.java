@@ -30,7 +30,11 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
 
             switch (opc) {
                 case 1:
-                    cadastrarItem();
+                    try {
+                        cadastrarItem();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 2:
                     listarEstoque();
@@ -130,7 +134,7 @@ public class TelaEstoqueTextual extends TelaTextualBase implements TelaEstoque {
         if (gerenciador.atualizarItem(id, novaDescricao, novaQuantidadeTotal, novoValorDiaria, novaTaxaMontagem)) {
             System.out.println("Item atualizado e salvo com sucesso!");
         } else {
-            System.out.println("Falha ao atualizar: verifique se os valores são válidos ou se a nova quantidade é menor que os itens já alugados.");
+            System.out.println("Falha ao atualizar. Confira a descrição, os preços e a quantidade já alugada.");
         }
     }
 

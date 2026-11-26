@@ -1,0 +1,368 @@
+@startuml
+title EstoqueEventos — diagrama de classes
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam nodesep 27
+skinparam ranksep 40
+skinparam classBackgroundColor white
+skinparam classBorderColor #475569
+skinparam arrowColor #475569
+hide empty members
+
+package "pacote padrão" as Entrada #F1F5F9 {
+  class "Main" as Main <<ponto de entrada>> {
+    {static} +main(args : String[]) : void
+  }
+}
+
+package "locacao.presentation" as Apresentacao #F3E8FF {
+  abstract class "FabricaUI" as FabricaUI {
+    {static} -modoAtual : TipoInterface = TipoInterface.GRAFICA {readOnly}
+    {static} +getFabrica() : FabricaUI
+    {abstract} +criarMenuPrincipal(gerenciador : GerenciadorEstoque) : MenuPrincipal
+    {abstract} +criarTelaEstoque(gerenciador : GerenciadorEstoque) : TelaEstoque
+    {abstract} +criarTelaEventos(gerenciador : GerenciadorEstoque) : TelaEventos
+  }
+
+  enum "-TipoInterface" as TipoInterface {
+    TEXTUAL
+    GRAFICA
+  }
+
+  interface "MenuPrincipal" as MenuPrincipal {
+    +iniciar() : void
+  }
+
+  interface "TelaEstoque" as TelaEstoque {
+    +exibirMenuEstoque() : void
+  }
+
+  interface "TelaEventos" as TelaEventos {
+    +exibirMenuEventos() : void
+  }
+}
+
+package "locacao.presentation.textual" as ApresentacaoTextual #F3E8FF {
+  class "FabricaTextualUI" as FabricaTextualUI {
+    +criarMenuPrincipal(gerenciador : GerenciadorEstoque) : MenuPrincipal
+    +criarTelaEstoque(gerenciador : GerenciadorEstoque) : TelaEstoque
+    +criarTelaEventos(gerenciador : GerenciadorEstoque) : TelaEventos
+  }
+
+  class "MenuTextual" as MenuTextual {
+    -fabrica : FabricaUI {readOnly}
+    +MenuTextual(gerenciador : GerenciadorEstoque, fabrica : FabricaUI)
+    +iniciar() : void
+  }
+
+  class "TelaEstoqueTextual" as TelaEstoqueTextual {
+    +TelaEstoqueTextual(gerenciador : GerenciadorEstoque)
+    +exibirMenuEstoque() : void
+    -cadastrarItem() : void
+    -editarItem() : void
+    -excluirItem() : void
+    -listarEstoque() : void
+  }
+
+  class "TelaEventosTextual" as TelaEventosTextual {
+    +TelaEventosTextual(gerenciador : GerenciadorEstoque)
+    +exibirMenuEventos() : void
+    -cadastrarEvento() : void
+    -listarEventos() : void
+    -editarEvento() : void
+    -alugarItem() : void
+    -devolverItem() : void
+    -excluirEvento() : void
+  }
+
+  abstract class "TelaTextualBase" as TelaTextualBase {
+    {static} #scanner : Scanner {readOnly}
+    #gerenciador : GerenciadorEstoque {readOnly}
+    +TelaTextualBase(gerenciador : GerenciadorEstoque)
+    #lerInteiro() : int
+    #lerQuantidadeEstoque() : int
+    #lerDouble() : double
+    #lerLong() : long
+    #lerData() : long
+  }
+}
+
+package "locacao.presentation.gui" as ApresentacaoGrafica #F3E8FF {
+  class "FabricaGraficaUI" as FabricaGraficaUI {
+    +criarMenuPrincipal(gerenciador : GerenciadorEstoque) : MenuPrincipal
+    +criarTelaEstoque(gerenciador : GerenciadorEstoque) : TelaEstoque
+    +criarTelaEventos(gerenciador : GerenciadorEstoque) : TelaEventos
+    -exibirLista(titulo : String, registros : List<?>) : void
+  }
+
+  class "JanelaRegistros" as JanelaRegistros <<final>> {
+    -dialogo : JDialog {readOnly}
+    -modelo : DefaultTableModel {readOnly}
+    -tabela : JTable {readOnly}
+    -botoes : JPanel {readOnly}
+    ~JanelaRegistros(titulo : String, colunas : String...)
+    ~atualizar(linhas : List<Object[]>) : void
+    ~acao(rotulo : String, tarefa : Runnable) : void
+    ~acaoComSelecao(rotulo : String, tarefa : IntConsumer) : void
+    ~formulario(titulo : String, campos : Object...) : boolean
+    ~confirmar(mensagem : String) : boolean
+    ~avisar(mensagem : String) : void
+    ~componente() : JDialog
+    ~abrir() : void
+  }
+
+  class "MenuGrafico" as MenuGrafico <<final>> {
+    -telaEstoque : TelaEstoque {readOnly}
+    -telaEventos : TelaEventos {readOnly}
+    ~MenuGrafico(telaEstoque : TelaEstoque, telaEventos : TelaEventos)
+    +iniciar() : void
+    -abrirJanela() : void
+  }
+
+  class "TelaEstoqueGrafica" as TelaEstoqueGrafica <<final>> {
+    -gerenciador : GerenciadorEstoque {readOnly}
+    ~TelaEstoqueGrafica(gerenciador : GerenciadorEstoque)
+    +exibirMenuEstoque() : void
+    -atualizarTabela(janela : JanelaRegistros) : void
+    -cadastrar(janela : JanelaRegistros) : void
+    -editar(janela : JanelaRegistros, id : int) : void
+    -excluir(janela : JanelaRegistros, id : int) : void
+    -decimal(campo : JTextField) : double
+  }
+
+  class "TelaEventosGrafica" as TelaEventosGrafica <<final>> {
+    {static} -FORMATO_DATA : DateTimeFormatter {readOnly}
+    -gerenciador : GerenciadorEstoque {readOnly}
+    ~TelaEventosGrafica(gerenciador : GerenciadorEstoque)
+    +exibirMenuEventos() : void
+    -atualizarTabela(janela : JanelaRegistros) : void
+    -preencherEvento(janela : JanelaRegistros, evento : Evento) : void
+    -excluir(janela : JanelaRegistros, id : int) : void
+    -exibirDetalhes(janela : JanelaRegistros, id : int) : void
+    -movimentarItem(janela : JanelaRegistros, idEvento : int, devolucao : boolean) : void
+    -formatarData(dia : long) : String
+  }
+}
+
+package "locacao.application" as Aplicacao #DBEAFE {
+  class "DadosLocacao" as DadosLocacao <<record>> {
+    -estoque : List<ItemEstrutura> {readOnly}
+    -eventos : List<Evento> {readOnly}
+    +estoque() : List<ItemEstrutura>
+    +eventos() : List<Evento>
+  }
+
+  class "GerenciadorEstoque" as GerenciadorEstoque {
+    -estoqueGlobal : List<ItemEstrutura>
+    -eventos : List<Evento>
+    -repositorio : RepositorioDados {readOnly}
+    +GerenciadorEstoque(repositorio : RepositorioDados)
+    +cadastrarNovoItem(item : ItemEstrutura) : void
+    +cadastrarEvento(evento : Evento) : void
+    +excluirItem(id : int) : boolean
+    +excluirEvento(id : int) : boolean
+    +listarEstoque() : List<ItemEstrutura>
+    +listarEventos() : List<Evento>
+    +atualizarItem(id : int, novaDescricao : String, novaQuantidadeTotal : int, novoValorDiaria : double, novaTaxaMontagem : double) : boolean
+    +atualizarEvento(id : int, novoNomeCliente : String, novaDataInicio : long, novaDataFim : long) : boolean
+    +devolverItemDoEvento(idEvento : int, idItem : int, qtd : int) : boolean
+    +alugarItemNoEvento(idEvento : int, idItem : int, qtd : int) : boolean
+    -salvarDados() : void
+    +buscarEventoPorId(idEvento : int) : Evento
+    +buscarItemPorId(idItem : int) : ItemEstrutura
+  }
+
+  interface "RepositorioDados" as RepositorioDados {
+    +carregar() : DadosLocacao
+    +salvar(dados : DadosLocacao) : void
+  }
+}
+
+package "locacao.infrastructure" as Infraestrutura #FEF3C7 {
+  class "RepositorioArquivos" as RepositorioArquivos {
+    {static} -ARQUIVO : Path {readOnly}
+    +carregar() : DadosLocacao
+    +salvar(dados : DadosLocacao) : void
+  }
+
+  class "RepositorioEmMemoria" as RepositorioEmMemoria {
+    -dados : DadosLocacao
+    +carregar() : DadosLocacao
+    +salvar(dados : DadosLocacao) : void
+  }
+}
+
+package "locacao.domain" as Dominio #DCFCE7 {
+  class "GeradorID" as GeradorID {
+    {static} -ultimoIDEvento : int
+    {static} -ultimoIDItem : int
+    -GeradorID()
+    {static} +gerarIDEvento() : int
+    {static} +setUltimoIDEvento(id : int) : void
+    {static} +gerarIDItem() : int
+    {static} +setUltimoIDItem(id : int) : void
+  }
+}
+
+package "locacao.domain.model" as Modelo #DCFCE7 {
+  class "EquipamentoSom" as EquipamentoSom {
+    -potenciaW : int {readOnly}
+    +EquipamentoSom(descricao : String, quantidadeTotal : int, valorDiaria : double, taxaMontagem : double, potenciaW : int)
+    +getPotenciaW() : int
+    +calcularValorLocacao(dias : long, quantidade : int) : double
+    +toString() : String
+  }
+
+  class "EstruturaAluminio" as EstruturaAluminio {
+    -tamanhoM : double {readOnly}
+    -tipoTruss : String {readOnly}
+    +EstruturaAluminio(descricao : String, quantidadeTotal : int, valorDiaria : double, taxaMontagem : double, tamanhoM : double, tipoTruss : String)
+    +calcularValorLocacao(dias : long, quantidade : int) : double
+    +getTamanhoM() : double
+    +getTipoTruss() : String
+    +toString() : String
+  }
+
+  class "Evento" as Evento {
+    -id : int {readOnly}
+    -nomeCliente : String
+    -dataInicio : long
+    -dataFim : long
+    -itensAlugados : List<ItemAlugado>
+    +Evento(nomeCliente : String, dataInicio : long, dataFim : long)
+    +alugarItem(item : ItemEstrutura, qtd : int) : boolean
+    +recuperarItem(item : ItemEstrutura, qtd : int) : boolean
+    +devolverTodosOsItens() : void
+    +calcularCustoTotal() : double
+    +duracaoDoEvento() : double
+    +setNomeCliente(nomeCliente : String) : void
+    +setDataInicio(dataInicio : long) : void
+    +setDataFim(dataFim : long) : void
+    +getId() : int
+    +getNomeCliente() : String
+    +getDataInicio() : long
+    +getDataFim() : long
+    +toString() : String
+  }
+
+  class "ItemAlugado" as ItemAlugado {
+    -item : ItemEstrutura {readOnly}
+    -quantidade : int
+    +ItemAlugado(item : ItemEstrutura, quantidade : int)
+    +calcularSubTotal(dias : long) : double
+    +aumentarQuantidade(qtd : int) : void
+    +diminuirQuantidade(qtd : int) : void
+    +getItem() : ItemEstrutura
+    +getQuantidade() : int
+    +toString() : String
+  }
+
+  abstract class "ItemEstrutura" as ItemEstrutura {
+    -id : int {readOnly}
+    -descricao : String
+    -quantidadeTotal : int
+    -quantidadeDisponivel : int
+    -valorDiaria : double
+    -taxaMontagem : double
+    #ItemEstrutura(descricao : String, quantidadeTotal : int, valorDiaria : double, taxaMontagem : double)
+    {abstract} +calcularValorLocacao(dias : long, quantidade : int) : double
+    +debitarEstoque(qtd : int) : boolean
+    +creditarEstoque(qtd : int) : void
+    +alterarQuantidadeTotal(novoTotal : int) : boolean
+    +getId() : int
+    +getDescricao() : String
+    +getQuantidadeTotal() : int
+    +getQuantidadeDisponivel() : int
+    +getValorDiaria() : double
+    +getTaxaMontagem() : double
+    +setValorDiaria(vlr : double) : void
+    +setDescricao(novaDesc : String) : void
+    +setTaxaMontagem(taxaMontagem : double) : void
+    +toString() : String
+  }
+
+  class "Tenda" as Tenda {
+    -aream2 : double {readOnly}
+    +Tenda(descricao : String, quantidadeTotal : int, valorDiaria : double, taxaMontagem : double, aream2 : double)
+    +calcularValorLocacao(dias : long, quantidade : int) : double
+    +getAream2() : double
+    +toString() : String
+  }
+}
+
+' Inicialização e escolha da interface
+Main ..> GerenciadorEstoque : cria
+Main ..> RepositorioArquivos : cria
+Main ..> FabricaUI : obtém fábrica
+Main ..> MenuPrincipal : inicia
+FabricaUI +-- TipoInterface : enum aninhado
+FabricaUI ..> FabricaTextualUI : seleciona
+FabricaUI ..> FabricaGraficaUI : seleciona
+FabricaUI ..> MenuPrincipal : produz
+FabricaUI ..> TelaEstoque : produz
+FabricaUI ..> TelaEventos : produz
+
+' Fábricas, produtos e dependências das telas
+FabricaTextualUI --|> FabricaUI
+FabricaGraficaUI --|> FabricaUI
+FabricaTextualUI ..> MenuTextual : cria
+FabricaTextualUI ..> TelaEstoqueTextual : cria
+FabricaTextualUI ..> TelaEventosTextual : cria
+FabricaGraficaUI ..> MenuGrafico : cria
+FabricaGraficaUI ..> TelaEstoqueGrafica : cria
+FabricaGraficaUI ..> TelaEventosGrafica : cria
+
+MenuTextual ..|> MenuPrincipal
+MenuGrafico ..|> MenuPrincipal
+TelaEstoqueTextual ..|> TelaEstoque
+TelaEstoqueGrafica ..|> TelaEstoque
+TelaEventosTextual ..|> TelaEventos
+TelaEventosGrafica ..|> TelaEventos
+MenuTextual --|> TelaTextualBase
+TelaEstoqueTextual --|> TelaTextualBase
+TelaEventosTextual --|> TelaTextualBase
+
+MenuTextual --> "1" FabricaUI : fabrica
+MenuGrafico --> "1" TelaEstoque : telaEstoque
+MenuGrafico --> "1" TelaEventos : telaEventos
+TelaTextualBase --> "1" GerenciadorEstoque : gerenciador
+TelaEstoqueGrafica --> "1" GerenciadorEstoque : gerenciador
+TelaEventosGrafica --> "1" GerenciadorEstoque : gerenciador
+TelaEstoqueGrafica ..> JanelaRegistros : cria
+TelaEventosGrafica ..> JanelaRegistros : cria
+
+' Casos de uso e persistência
+RepositorioArquivos ..|> RepositorioDados
+RepositorioEmMemoria ..|> RepositorioDados
+RepositorioDados ..> DadosLocacao : carrega e salva
+RepositorioEmMemoria --> "1" DadosLocacao : dados
+GerenciadorEstoque --> "1" RepositorioDados : repositorio
+GerenciadorEstoque ..> DadosLocacao : prepara dados
+GerenciadorEstoque ..> GeradorID : restaura contadores
+GerenciadorEstoque --> "0..*" Evento : eventos
+GerenciadorEstoque --> "0..*" ItemEstrutura : estoqueGlobal
+DadosLocacao --> "0..*" Evento : eventos
+DadosLocacao --> "0..*" ItemEstrutura : estoque
+
+' Modelo de negócio
+Tenda --|> ItemEstrutura
+EquipamentoSom --|> ItemEstrutura
+EstruturaAluminio --|> ItemEstrutura
+Evento "1" *-- "0..*" ItemAlugado : itensAlugados
+ItemAlugado "0..*" --> "1" ItemEstrutura : item
+Evento ..> GeradorID : gera ID
+ItemEstrutura ..> GeradorID : gera ID
+
+legend bottom
+  |= Símbolo |= Significado |
+  | + / - / # / ~ | público / privado / protegido / do pacote |
+  | triângulo com linha contínua | herança |
+  | triângulo com linha tracejada | implementação de interface |
+  | losango preenchido | composição |
+  | seta tracejada | dependência |
+endlegend
+@enduml

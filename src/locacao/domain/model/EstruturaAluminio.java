@@ -7,6 +7,12 @@ public class EstruturaAluminio extends ItemEstrutura {
 
     public EstruturaAluminio(String descricao, int quantidadeTotal, double valorDiaria, double taxaMontagem, double tamanhoM, String tipoTruss) {
         super(descricao, quantidadeTotal, valorDiaria, taxaMontagem);
+        if (!Double.isFinite(tamanhoM) || tamanhoM <= 0) {
+            throw new IllegalArgumentException("Informe um comprimento maior que zero.");
+        }
+        if (tipoTruss == null || tipoTruss.isBlank()) {
+            throw new IllegalArgumentException("Informe o tipo de truss.");
+        }
         this.tamanhoM = tamanhoM;
         this.tipoTruss = tipoTruss;
     }

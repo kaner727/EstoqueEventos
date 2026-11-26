@@ -133,7 +133,7 @@ final class TelaEstoqueGrafica implements TelaEstoque {
             if (atualizado) {
                 atualizarTabela(janela);
             } else {
-                janela.avisar("Confira os preços e a quantidade já alugada.");
+                janela.avisar("Confira a descrição, os preços e a quantidade já alugada.");
             }
         } catch (NumberFormatException e) {
             janela.avisar("Preencha a quantidade e os preços com números válidos.");

@@ -10,7 +10,6 @@ import java.util.List;
 public class GerenciadorEstoque {
     private List<ItemEstrutura> estoqueGlobal;
     private List<Evento> eventos;
-
     private final RepositorioDados repositorio;
 
     public GerenciadorEstoque(RepositorioDados repositorio) {
@@ -76,7 +75,6 @@ public class GerenciadorEstoque {
         return true;
     }
 
-
     public List<ItemEstrutura> listarEstoque() {
         return Collections.unmodifiableList(this.estoqueGlobal);
     }
@@ -85,10 +83,10 @@ public class GerenciadorEstoque {
         return Collections.unmodifiableList(this.eventos);
     }
 
-
     public boolean atualizarItem(int id, String novaDescricao, int novaQuantidadeTotal, double novoValorDiaria, double novaTaxaMontagem) {
         ItemEstrutura item = buscarItemPorId(id);
         if (item == null
+                || novaDescricao == null || novaDescricao.isBlank()
                 || !Double.isFinite(novoValorDiaria) || novoValorDiaria < 0
                 || !Double.isFinite(novaTaxaMontagem) || novaTaxaMontagem < 0) {
             return false;
@@ -151,7 +149,6 @@ public class GerenciadorEstoque {
     private void salvarDados() {
         repositorio.salvar(new DadosLocacao(estoqueGlobal, eventos));
     }
-
 
     public Evento buscarEventoPorId(int idEvento) {
         for (Evento e : eventos) {
